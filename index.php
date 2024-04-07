@@ -62,7 +62,7 @@ if (isset($_POST["login"])) {
           <h1>Login</h1>
           <span>E-Learning Rumah Belajar Yaya</span>
         </div>
-        <img src="./assets/logo/logo.png" alt="my-logo" class="logo">
+        <img src="./assets/logo/logo.png" alt="my-logo" class="logo" loading="lazy">
         <div class="input-group">
           <div class="input-item">
             <input type="email" name="email" id="email" placeholder="Email" value="<?php if (isset($email)) echo $email ?>">
