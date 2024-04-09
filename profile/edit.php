@@ -79,25 +79,24 @@ $get_detail_user = $db->query($query);
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <form class="col-lg-12">
+            <form class="col-lg-12" action="../service/user/update.php?id=<?= $_SESSION["id"] ?>" method="POST">
               <?php foreach ($get_detail_user as $user) { ?>
-
-                <div class="card-body">
+                <div class="card-body pt-0">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Nama Lengkap</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" value="<?= $user["username"] ?>" />
+                    <input type="text" name="username" class="form-control" id="exampleInputEmail1" value="<?= $user["username"] ?>" />
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Email</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" value="<?= $user["email"] ?>">
+                    <input type="email" name="email" class="form-control" id="exampleInputPassword1" value="<?= $user["email"] ?>">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Nomor Telepon</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" value="<?= $user["phone"] ?>">
+                    <input type="text" name="phone" class="form-control" id="exampleInputPassword1" value="<?= $user["phone"] ?>">
                   </div>
                   <div class="form-group">
                     <label>Jenis Kelamin</label>
-                    <select class="form-control select2" style="width: 100%;">
+                    <select class="form-control select2" style="width: 100%;" name="gender">
                       <option selected="selected"><?= $user["gender"] ?></option>
                       <option><?php if ($user["gender"] == "Laki-laki") echo "Perempuan";
                               else echo "Laki-laki"; ?></option>
@@ -106,7 +105,7 @@ $get_detail_user = $db->query($query);
                   <div class="form-group">
                     <label>Tanggal Lahir</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" value="<?= $user["tgl_lahir"] ?>" />
+                      <input type="text" name="tgl_lahir" class="form-control datetimepicker-input" data-target="#reservationdate" value="<?= $user["tgl_lahir"] ?>" />
                       <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -114,9 +113,12 @@ $get_detail_user = $db->query($query);
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Alamat Lengkap</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" value="<?= $user["alamat"] ?>">
+                    <input type="text" name="alamat" class="form-control" id="exampleInputPassword1" value="<?= $user["alamat"] ?>">
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <div class="d-flex justify-content-end">
+                    <a href="/profile" class="mr-2"><button class="btn btn-warning" type="button">Cancel</button></a>
+                    <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                  </div>
                 </div>
 
               <?php } ?>

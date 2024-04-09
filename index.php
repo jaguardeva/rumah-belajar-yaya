@@ -22,12 +22,12 @@ if (isset($_POST["login"])) {
       $_SESSION["email"] = $row["email"];
       $_SESSION["name"] = $row["username"];
       $_SESSION["role"] = $row["role"];
+      $_SESSION["image"] = $row["img"];
       $_SESSION["id"] = $row["id"];
       $_SESSION["login"] = TRUE;
     }
     header("Location: dashboard.php");
   } else {
-    $_SESSION["login"] = FALSE;
     $_SESSION["message"] = "Email atau Password salah";
   }
 }

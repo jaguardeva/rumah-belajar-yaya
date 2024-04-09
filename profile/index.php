@@ -34,6 +34,10 @@ $get_detail_user = $db->query($query);
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dashboard/dist/css/adminlte.min.css">
+
+  <link rel="stylesheet" href="../dashboard/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../dashboard/plugins/toastr/toastr.min.css">
 </head>
 <!--
 `body` tag options:
@@ -77,22 +81,26 @@ $get_detail_user = $db->query($query);
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-4 d-flex flex-column align-items-center justify-content-center">
-              <img src="../public/image/pas-photo-almet.png" width="150" alt="pas-photo-almet.png" loading="lazy">
-              <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input type="file" style="cursor: pointer;" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+            <?php foreach ($get_detail_user as $user) { ?>
+
+              <div class="col-lg-4 d-flex flex-column align-items-center">
+                <img src="../public/image/<?= $user["img"] ?>" width="150" alt="<?= $user["img"] ?>" loading="lazy">
+                <form class="form-group" method="POST" action="../service/user/update_photo.php" enctype="multipart/form-data">
+                  <label for="exampleInputFile">Ganti Foto</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input type="file" style="cursor: pointer;" class="custom-file-input" id="exampleInputFile" onchange="updateFileName()" name="photo">
+                      <label class="custom-file-label" for="exampleInputFile" id="fileLabel">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <button class="input-group-text btn btn-light" type="submit" name="upload">Upload</button>
+                    </div>
                   </div>
-                  <div class="input-group-append">
-                    <span class="input-group-text">Upload</span>
-                  </div>
-                </div>
+                </form>
               </div>
-            </div>
-            <div class="col-lg-4">
+
+            <?php } ?>
+            <div class="col-lg-7">
               <table class="table table-striped">
                 <tbody>
                   <?php foreach ($get_detail_user as $user) { ?>
@@ -146,6 +154,7 @@ $get_detail_user = $db->query($query);
     <!-- Main Footer -->
     <?php include "../layout/footer.php"; ?>
   </div>
+
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
@@ -156,6 +165,44 @@ $get_detail_user = $db->query($query);
   <script src="../dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE -->
   <script src="../dashboard/dist/js/adminlte.js"></script>
+  <script src="../dashboard/plugins/sweetalert2/sweetalert2.min.js"></script>
+  <!-- Toastr -->
+  <script src="../dashboard/plugins/toastr/toastr.min.js"></script>
+  <script src="../dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <?php
+
+  if (isset($_SESSION["message"])) { ?>
+
+    <script>
+      toastr.success('<?php echo $_SESSION["message"]; ?>'); // Added single quotes around the PHP code
+    </script>
+
+  <?php
+    unset($_SESSION["message"]); // Clear the session message after displaying
+  }
+
+  if (isset($_SESSION["error"])) { ?>
+
+    <script>
+      toastr.error('<?php echo $_SESSION["error"]; ?>'); // Added single quotes around the PHP code
+    </script>
+
+  <?php
+    unset($_SESSION["error"]); // Clear the session message after displaying
+  }
+
+  ?>
+
+  <script>
+    function updateFileName() {
+      var input = document.getElementById('exampleInputFile');
+      var label = document.getElementById('fileLabel');
+      var fileName = input.files[0].name;
+      label.innerHTML = fileName;
+    }
+  </script>
+
 </body>
 
 </html>

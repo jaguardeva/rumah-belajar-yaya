@@ -10,7 +10,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center justify-content-center">
           <div class="image">
-            <img src="../public/image/pas-photo-almet.png" class=" elevation-2" alt="User Image">
+            <img src="../public/image/<?php if (isset($_SESSION["image"])) echo $_SESSION["image"] ?>" class="elevation-2" alt="User Image">
           </div>
           <div class="info">
             <span class="d-block"> <?php if (isset($_SESSION["name"])) echo strtoupper($_SESSION["name"]) ?></span>
