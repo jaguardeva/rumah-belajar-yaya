@@ -15,6 +15,13 @@ if (isset($_POST["upload"])) {
   $imageExtension = explode('.', $fileName);
   $imageExtension = strtolower(end($imageExtension));
 
+  if ($error === 4) {
+    $_SESSION["error"] = "Tidak ada gambar yang dipilih.";
+    header("Location: ../../profile");
+    exit();
+  }
+
+
   if (!in_array($imageExtension, $validImageExtension)) {
     $_SESSION["error"] = "Unggahan gagal. Ekstensi gambar tidak sesuai.";
     header("Location: ../../profile");
@@ -27,11 +34,6 @@ if (isset($_POST["upload"])) {
     exit();
   }
 
-  if ($error === 4) {
-    $_SESSION["error"] = "Tidak ada gambar yang dipilih.";
-    header("Location: ../../profile");
-    exit();
-  }
 
   // Hapus foto lama jika ada
   $querySelect = "SELECT img FROM users WHERE id = '$_SESSION[id]'";

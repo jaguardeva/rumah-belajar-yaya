@@ -33,26 +33,18 @@
             </li>
             <li class="nav-header">MENU SISWA</li>
             <li class="nav-item">
+              <a href="../assignment" class="nav-link">
+                <i class="nav-icon fa-solid fa-file-pen"></i>
+                <p>
+                  Materi / Penugasan
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="../dashboard/pages/forms/advanced.html" class="nav-link">
-                <i class="nav-icon fa-solid fa-book"></i>
+                <i class="nav-icon fa-solid fa-clipboard-check"></i>
                 <p>
-                  Penugasan
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/gallery.html" class="nav-link">
-                <i class="nav-icon far fa-image"></i>
-                <p>
-                  Gallery
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/kanban.html" class="nav-link">
-                <i class="nav-icon fas fa-columns"></i>
-                <p>
-                  Kanban Board
+                  Tugas Selesai
                 </p>
               </a>
             </li>
@@ -64,7 +56,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="./auth/logout.php" class="nav-link">
+              <a href="../auth/logout.php" class="nav-link">
                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                 <p>Logout</p>
               </a>

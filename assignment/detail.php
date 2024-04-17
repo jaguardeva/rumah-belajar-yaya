@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once "../database/connection.php";
+require_once "../utils/submit_status.php";
 
 if (empty($_SESSION["login"])) {
   $_SESSION["message"] = "Silahkan login terlebih dahulu";
@@ -11,6 +13,15 @@ if (isset($_POST["logout"])) {
   header("Location: index.php");
 }
 
+$getAssignmentQuery = "SELECT assignment.*, users.username, submission.submit_date FROM assignment LEFT JOIN users ON assignment.made_by = users.id  LEFT JOIN submission  ON assignment.id = submission.assignment_id WHERE assignment.id = " . $_GET["id"];
+
+
+$getAssignment = $db->query($getAssignmentQuery)->fetch_assoc();
+
+
+
+
+
 ?>
 
 
@@ -20,7 +31,7 @@ if (isset($_POST["logout"])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Beranda | E-Learning Rumah Belajar Yaya</title>
+  <title><?= $getAssignment["title"] ?> | E-Learning Rumah Belajar Yaya</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,7 +40,7 @@ if (isset($_POST["logout"])) {
   <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="./dashboard/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dashboard/dist/css/adminlte.min.css">
 </head>
 <!--
 `body` tag options:
@@ -88,7 +99,7 @@ if (isset($_POST["logout"])) {
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <?php include "./layout/aside.php" ?>
+    <?php include "../layout/aside.php" ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -97,11 +108,14 @@ if (isset($_POST["logout"])) {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Selamat Datang, <?php if (isset($_SESSION["name"])) echo $_SESSION["name"] ?></h1>
+              <h1 class="m-0"><?= $getAssignment["title"] ?></h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active"><a href="/assignment">Assignment</a></li>
+                <li class="breadcrumb-item active"><?= $getAssignment["title"] ?></li>
+                </li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -112,65 +126,46 @@ if (isset($_POST["logout"])) {
       <!-- Main content -->
       <div class="content">
         <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3>150</h3>
 
-                  <p>New Orders</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-bag"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
+
+
+          <div class="container col-12 col-md-10 col-lg-6">
+            <div>
+              <h3>Deskripsi</h3>
+              <p><?= $getAssignment["desc"] ?></p>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>53<sup style="font-size: 20px">%</sup></h3>
+            <div class="row">
+              <table class="table table-striped">
 
-                  <p>Bounce Rate</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
+                <tbody>
+                  <tr>
+                    <td>Judul</td>
+                    <td><?= $getAssignment["title"] ?></td>
+                  </tr>
+                  <tr>
+                    <td>Waktu Dibuat</td>
+                    <td><?= $getAssignment["created_at"] ?></td>
+                  </tr>
+                  <tr>
+                    <td>Dibuat Oleh</td>
+                    <td><?= $getAssignment["username"] ?></td>
+                  </tr>
+                  <tr>
+                    <td>Batas Pengumpulan</td>
+                    <td><?= $getAssignment["deadline"] ?></td>
+                  </tr>
+                  <tr>
+                    <td>Waktu Tersisa</td>
+                    <td><?= statusPengumpulan($getAssignment["deadline"], $getAssignment["submit_date"]) ?></td>
+                  </tr>
+                  <tr>
+                    <td class="text-bold">Status</td>
+                    <td class="bg-warning"><?= $getAssignment["submit_date"] === NULL ? "Belum Dikumpulkan" : "Sudah Dikumpulkan" ?></td>
+                    </td>
+                  </tr>
+                </tbody>
 
-                  <p>User Registrations</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3>65</h3>
-
-                  <p>Unique Visitors</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
+              </table>
             </div>
             <!-- ./col -->
           </div>
@@ -189,20 +184,18 @@ if (isset($_POST["logout"])) {
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
-      <span>Copyright &copy; 2024 | Rumah Belajar Yaya</span>
-    </footer>
+    <?php include "../layout/footer.php" ?>
   </div>
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
 
   <!-- jQuery -->
-  <script src="./dashboard/plugins/jquery/jquery.min.js"></script>
+  <script src="../dashboard/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap -->
-  <script src="./dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE -->
-  <script src="./dashboard/dist/js/adminlte.js"></script>
+  <script src="../dashboard/dist/js/adminlte.js"></script>
 </body>
 
 </html>

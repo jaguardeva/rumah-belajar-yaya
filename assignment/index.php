@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "../database/connection.php";
 
 if (empty($_SESSION["login"])) {
   $_SESSION["message"] = "Silahkan login terlebih dahulu";
@@ -11,6 +12,10 @@ if (isset($_POST["logout"])) {
   header("Location: index.php");
 }
 
+$getAssignmentQuery = "SELECT * FROM users_assign INNER JOIN assignment ON users_assign.assignment_id = assignment.id WHERE users_assign.user_id = " . $_SESSION["id"];
+
+$getAssignment = $db->query($getAssignmentQuery);
+
 ?>
 
 
@@ -20,7 +25,7 @@ if (isset($_POST["logout"])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Beranda | E-Learning Rumah Belajar Yaya</title>
+  <title>Assignment | E-Learning Rumah Belajar Yaya</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,7 +34,18 @@ if (isset($_POST["logout"])) {
   <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="./dashboard/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dashboard/dist/css/adminlte.min.css">
+
+  <style>
+    .info-box {
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .info-box:hover {
+      background-color: #eee;
+    }
+  </style>
 </head>
 <!--
 `body` tag options:
@@ -88,7 +104,7 @@ if (isset($_POST["logout"])) {
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <?php include "./layout/aside.php" ?>
+    <?php include "../layout/aside.php" ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -97,11 +113,12 @@ if (isset($_POST["logout"])) {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Selamat Datang, <?php if (isset($_SESSION["name"])) echo $_SESSION["name"] ?></h1>
+              <h1 class="m-0">Assignment</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active">Assignment</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -113,65 +130,28 @@ if (isset($_POST["logout"])) {
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3>150</h3>
 
-                  <p>New Orders</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-bag"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>53<sup style="font-size: 20px">%</sup></h3>
+            <?php foreach ($getAssignment as $assignment) { ?>
+              <div class="col-12 col-sm-6 col-md-3">
+                <a href="../assignment/detail.php?id=<?= $assignment['id'] ?>" class="info-box text-dark">
+                  <span class="info-box-icon bg-info elevation-1">
+                    <!-- <i class="fas fa-cog"></i> -->
+                    <i class="fa-regular fa-clipboard"></i>
+                  </span>
 
-                  <p>Bounce Rate</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                  <div class="info-box-content">
+                    <span class="info-box-text"><?= $assignment['title'] ?></span>
+                    <span class="info-box-number">
+                      19 november 2020
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </a>
+                <!-- /.info-box -->
               </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
+            <?php } ?>
 
-                  <p>User Registrations</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3>65</h3>
 
-                  <p>Unique Visitors</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
             <!-- ./col -->
           </div>
           <!-- /.row -->
@@ -198,11 +178,11 @@ if (isset($_POST["logout"])) {
   <!-- REQUIRED SCRIPTS -->
 
   <!-- jQuery -->
-  <script src="./dashboard/plugins/jquery/jquery.min.js"></script>
+  <script src="../dashboard/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap -->
-  <script src="./dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE -->
-  <script src="./dashboard/dist/js/adminlte.js"></script>
+  <script src="../dashboard/dist/js/adminlte.js"></script>
 </body>
 
 </html>
