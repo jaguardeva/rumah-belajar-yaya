@@ -164,6 +164,26 @@ $getAssignment = $db->query($getAssignmentQuery)->fetch_assoc();
 
               </table>
             </div>
+            <div class="row">
+              <form action="" method="POST" class="col-sm-12">
+                <div>
+                  <!-- textarea -->
+                  <div class="form-group">
+                    <label>Message</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" style="cursor: pointer;" class="custom-file-input" id="exampleInputFile" onchange="updateFileName()" name="photo">
+                    <label class="custom-file-label" for="exampleInputFile" id="fileLabel">Choose file</label>
+                  </div>
+                  <div class="input-group-append">
+                  </div>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit" name="upload">Submit</button>
+              </form>
+            </div>
             <!-- ./col -->
           </div>
           <!-- /.row -->
@@ -193,6 +213,15 @@ $getAssignment = $db->query($getAssignmentQuery)->fetch_assoc();
   <script src="../dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE -->
   <script src="../dashboard/dist/js/adminlte.js"></script>
+
+  <script>
+    function updateFileName() {
+      var input = document.getElementById('exampleInputFile');
+      var label = document.getElementById('fileLabel');
+      var fileName = input.files[0].name;
+      label.innerHTML = fileName;
+    }
+  </script>
 </body>
 
 </html>

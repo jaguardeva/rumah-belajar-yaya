@@ -30,12 +30,7 @@
       </div>
     </li>
     <li class="mr-3">
-      <form method="POST">
-        <button class="btn " type="submit" name="logout">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-      </form>
-
+      <a href="../auth/logout.php" class="btn"><i class="fas fa-sign-out-alt"></i></a>
     </li>
   </ul>
 </nav>
