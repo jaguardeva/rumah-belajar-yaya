@@ -1,11 +1,8 @@
 <?php
 session_start();
 require_once "../database/connection.php";
-
-if (empty($_SESSION["login"])) {
-  $_SESSION["message"] = "Silahkan login terlebih dahulu";
-  header("Location: /");
-}
+require_once "../auth/login.php";
+login();
 
 if (isset($_POST["logout"])) {
   session_destroy();

@@ -2,11 +2,8 @@
 session_start();
 require_once "../database/connection.php";
 require_once "../utils/submit_status.php";
-
-if (empty($_SESSION["login"])) {
-  $_SESSION["message"] = "Silahkan login terlebih dahulu";
-  header("Location: /");
-}
+require_once "../auth/login.php";
+login();
 
 if (isset($_POST["logout"])) {
   session_destroy();
@@ -160,7 +157,7 @@ $getAssignment = $db->query($getAssignmentQuery)->fetch_assoc();
                   </tr>
                   <tr>
                     <td class="text-bold">Status</td>
-                    <td class="<?= $getAssignment["submit_date"] === NULL ? "bg-warning" : "bg-success" ?>"><?= $getAssignment["submit_date"] === NULL ? "Belum Dikumpulkan" : "Sudah Dikumpulkan" ?></td>
+                    <td class="<?= $getAssignment["submit_date"] === NULL ? "bg-warning" : "bg-success" ?>"><?= $getAssignment["submit_date"] === NULL ? "Belum Dikumpulkan!" : "Sudah Dikumpulkan!" ?></td>
                     </td>
                   </tr>
                 </tbody>

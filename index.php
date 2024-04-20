@@ -28,7 +28,7 @@ if (isset($_POST["login"])) {
     }
     header("Location: dashboard.php");
   } else {
-    $_SESSION["message"] = "Email atau Password salah";
+    $_SESSION["message"] = "Email atau Password salah!";
   }
 }
 

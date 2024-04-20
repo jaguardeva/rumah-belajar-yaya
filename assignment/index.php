@@ -1,13 +1,8 @@
 <?php
 session_start();
 require_once "../database/connection.php";
-
-// Check if user is logged in
-if (empty($_SESSION["login"])) {
-  $_SESSION["message"] = "Silahkan login terlebih dahulu";
-  header("Location: /");
-  exit; // Stop further execution
-}
+require_once "../auth/login.php";
+login();
 
 // Logout handling
 if (isset($_POST["logout"])) {
