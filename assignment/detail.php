@@ -156,11 +156,11 @@ $getAssignment = $db->query($getAssignmentQuery)->fetch_assoc();
                   </tr>
                   <tr>
                     <td>Waktu Tersisa</td>
-                    <td><?= statusPengumpulan($getAssignment["deadline"], $getAssignment["submit_date"]) ?></td>
+                    <td><?= getStatusPengumpulan($getAssignment["deadline"], $getAssignment["submit_date"]) ?></td>
                   </tr>
                   <tr>
                     <td class="text-bold">Status</td>
-                    <td class="bg-warning"><?= $getAssignment["submit_date"] === NULL ? "Belum Dikumpulkan" : "Sudah Dikumpulkan" ?></td>
+                    <td class="<?= $getAssignment["submit_date"] === NULL ? "bg-warning" : "bg-success" ?>"><?= $getAssignment["submit_date"] === NULL ? "Belum Dikumpulkan" : "Sudah Dikumpulkan" ?></td>
                     </td>
                   </tr>
                 </tbody>
